@@ -35,8 +35,7 @@ final_amount = float(rate) * float(amount)
 print(f'Your final amount is  {final_amount}  {to_currency}')
 
    
-
-   
+ 
 
 
 
