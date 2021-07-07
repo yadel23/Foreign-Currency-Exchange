@@ -18,7 +18,7 @@ jobs:
           pip install coverage                            #this is new
           pip install pandas
           pip install sqlalchemy
-          
+          pip install requests
       - name: Test with unittest
         run: |
           python3 -m unittest test_convert_currency.py
