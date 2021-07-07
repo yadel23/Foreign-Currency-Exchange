@@ -39,6 +39,7 @@ def convertion_json(from_currency, to_currency):
     return data_2
 
 
+
 def final_cal(data_2, amount, to_currency):
     final_amount = 0
     rate = 0
