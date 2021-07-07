@@ -10,24 +10,45 @@ def symbols_json():
 def symbols_dic(data):
     symbols ={}
     for key, value in data['symbols'].items():
-          symbols[value['description'].lower()] = value['code'].upper()
+          symbols[value['code'].upper()] = value['description'].lower()
+          
+#     for x in symbols.keys():
+#       print(x + ' => ' + symbols[x])
     return symbols
 
 
 def currency_lookup(symbols):
-    
-    amount = eval(input("please enter the amount you would like to exchange?\n"))
-    from_currency = input('please enter the currency?\n')
-    to_currency = input('Please enter the currency you would like to exchange to?\n')
-    
-    for key, value in symbols.items():
-        if from_currency.upper() == value:
-          from_currency = from_currency.upper()     
-
-        if to_currency.upper() == value:
-          to_currency = to_currency.upper()
+  
+    while True:
+      amount = eval(input("\nplease enter the amount you would like to exchange?\n"))
+      if type(amount) != int and type(amount) != float:
+        print('Invalid input please try again!\n')
+        continue
+      else:
+        break
+        
+    while True:
+      from_currency = input('\nplease enter the currency you have?\n')
+      if not from_currency.upper() in symbols.keys():
+        print('Invalid input or not included in database please try again!')
+        continue
+      else:
+        from_currency.upper()
+        break
+        
+    while True:
+      to_currency = input('\nPlease enter the currency you would like to exchange to?\n')
+      if not to_currency.upper() in symbols.keys():
+        print('Invalid input or not included in database please try again!\n')
+        continue
+      if from_currency == to_currency:
+        print('Invalid input: please enter another currency to convert to!\n')
+        continue
+      else:
+        to_currency.upper()
+        break              
           
-    return from_currency, to_currency, amount
+    return from_currency.upper(), to_currency.upper(), amount
          
           
 def convertion_json(from_currency, to_currency):
@@ -47,19 +68,19 @@ def final_cal(data_2, amount, to_currency):
         rate = value
         
     final_amount = float(rate) * float(amount)
-    print(f'Your final amount is  {final_amount}  {to_currency}')
+    print(f'Your final amount is  {final_amount}  {to_currency}\n')
 
     
 def main():
     symbols_data = symbols_json()
-    symbols_dictionary = symbols_dic(symbols_data)
+    symbols_dictionary = symbols_dic(symbols_data)    
+    from_cur, to_cur, amt  = currency_lookup(symbols_dictionary)
+    rate_data = convertion_json(from_cur, to_cur)
+    final_cal(rate_data, amt, to_cur)
     
-#    from_cur, to_cur, amt  = currency_lookup(symbols_dictionary)
-#     rate_data = convertion_json(from_cur, to_cur)
-#     final_cal(rate_data, amt, to_cur)
-    ## comment out later
-    rate_data = convertion_json('USD', 'EUR')
-    final_cal(rate_data, 80, 'EUR')
+#     ## comment out later
+#     rate_data = convertion_json('USD', 'EUR')
+#     final_cal(rate_data, 80, 'EUR')
     
     
 if __name__ == "__main__":
