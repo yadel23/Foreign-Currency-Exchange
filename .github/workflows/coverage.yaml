@@ -1,4 +1,4 @@
-name: Tests
+name: Coverage Tester
 on: push
 
 jobs:
@@ -16,12 +16,16 @@ jobs:
         run: |
           python -m pip install --upgrade pip pytest
           pip install coverage                            #this is new
+          pip install pandas
+          pip install sqlalchemy
+          pip install requests
       - name: Test with unittest
-        run: python3 -m unittest test.py
+        run: |
+          python3 -m unittest test_convert_currency.py
           
       - name: Check code coverage                        #new from here down
         run: |
-          python3 -m coverage run -m unittest test.py
+          python3 -m coverage run -m unittest test_convert_currency.py
           python3 -m coverage report
           python3 -m coverage html
           
