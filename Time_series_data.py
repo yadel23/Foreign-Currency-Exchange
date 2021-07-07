@@ -25,13 +25,24 @@ response = requests.get(base_url + 'timeseries?start_date=' + str(start_date) + 
 data = response.json()
 #print(data)
 
+
+
 col_names = ["Day", "Rate"]
 df = pd.DataFrame(columns = col_names)
 for key, value in data['rates'].items():
     df.loc[len(df.index)] = [key, value[currency.upper()]]
 
+#Histogram
+df.hist(column = "Rate")
+plt.savefig("hist_test.png")
+
+#Line plot
+df.plot.line(x='Day', y='Rate')
+plt.savefig("line_test.png")
+
+
 df.to_sql(table_name, con=engine, if_exists='replace', index=False)
 os.system('mysqldump -u root -pcodio '+database_name+' > '+ filename)
 
-#print(df)
+
 

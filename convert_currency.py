@@ -19,7 +19,7 @@ for key, value in symbols.items():
    if from_currency.upper() == value :
       from_currency = from_currency.upper()     
       
-   if to_currency.upper() == value:
+    if to_currency.upper() == value:
       to_currency = to_currency.upper()
         
 full_url = base_url + 'convert?from=' + from_currency + '&to=' + to_currency
