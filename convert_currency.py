@@ -15,7 +15,8 @@ def symbols_dic(data):
 
 
 def currency_lookup(symbols):
-    amount = input("please enter the amount you would like to exchange?\n")
+    
+    amount = eval(input("please enter the amount you would like to exchange?\n"))
     from_currency = input('please enter the currency?\n')
     to_currency = input('Please enter the currency you would like to exchange to?\n')
     
@@ -48,19 +49,20 @@ def final_cal(data_2, amount, to_currency):
     print(f'Your final amount is  {final_amount}  {to_currency}')
 
     
-# def main():
-#     symbols_data = symbols_json()
-#     symbols_dictionary = symbols_dic(symbols_data)
-#     from_cur, to_cur, amt  = currency_lookup(symbols_dictionary)
-# #     rate_data = convertion_json(from_cur, to_cur)
-# #     final_cal(rate_data, amt, to_cur)
+def main():
+    symbols_data = symbols_json()
+    symbols_dictionary = symbols_dic(symbols_data)
     
+#    from_cur, to_cur, amt  = currency_lookup(symbols_dictionary)
 #     rate_data = convertion_json(from_cur, to_cur)
 #     final_cal(rate_data, amt, to_cur)
+    ## comment out later
+    rate_data = convertion_json('USD', 'EUR')
+    final_cal(rate_data, 80, 'EUR')
     
     
-# if __name__ == "__main__":
-#     main()
+if __name__ == "__main__":
+    main()
  
 
 
