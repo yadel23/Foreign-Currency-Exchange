@@ -24,6 +24,13 @@ def symbols_dic(symbols_data):
 #Gathering Input
 def gatherInput(symbols):
   
+  print('''\n
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  %        WELCOME TO THE CURRENCY TIME SERIES PROGRAM         %
+  %                                                            %
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \n''')
+  
   while True:
     start_date = input("\nPlease enter the start date in the format, YYYY-MM-DD: \n")
     isValidDate = True
@@ -124,12 +131,15 @@ def buildUrl(base_url, start_date, end_date):
 
 #Building panda dataframe
 def buildDataframe(data, currency_list):
-  for currency in currency_list:
-    col_names = [currency, "Day", "Rate"]
+  i = 0
+  while i < len(currency_list):
+    col_names = ["Currency", "Day", "Rate"]
     df = pd.DataFrame(columns = col_names)
     for key, value in data['rates'].items():
-      df.loc[len(df.index)] = [currency, key, value[currency.upper()]]
-  print(df)         
+      df.loc[len(df.index)] = [currency_list[i], key, value[currency_list[i].upper()]] 
+    df.append(df)
+    i += 1
+  print(df)   
   return df
 
 #Line plot
@@ -145,7 +155,7 @@ def savetoDatabase(df, engine, filetable_name, table_name, database_name):
   os.system('mysqldump -u root -pcodio '+database_name+' > '+ filetable_name)
 
 #The main function
-def main():
+def time_series_program():
   database_name = "history"
   filetable_name = "time_series.sql"
   table_name = 'currency_history'
@@ -159,4 +169,12 @@ def main():
   #linePlot(df, currency_list, start_date, end_date)
   savetoDatabase(df, engine, filetable_name, table_name, database_name)
   
-main()
+  print('''\n
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      %                                                                  %
+      %      THANK YOU FOR USING OUR CURRENCY TIME SERIES PROGRAM        %
+      %                                                                  %
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      \n''')
+  
+time_series_program()

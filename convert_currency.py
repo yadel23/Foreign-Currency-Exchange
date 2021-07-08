@@ -12,12 +12,17 @@ def symbols_dic(data):
     for key, value in data['symbols'].items():
           symbols[value['code'].upper()] = value['description'].lower()
           
-#     for x in symbols.keys():
-#       print(x + ' => ' + symbols[x])
     return symbols
 
-
 def currency_lookup(symbols):
+    
+    print('''\n
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      %        WELCOME TO THE CURRENCY CONVERSION PROGRAM          %
+      %                                                            %
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      \n''')
+    
 
     while True:
       isValid = True
@@ -77,9 +82,30 @@ def final_cal(data_2, amount, to_currency):
         
     final_amount = float(rate) * float(amount)
     print(f'\nYour final amount is  {final_amount}  {to_currency}\n')
-
     
-def main():
+    print('''\n
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      %                                                            %
+      %        THANK YOU FOR USING OUR CONVERSION PROGRAM          %
+      %                                                            %
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      \n''')
+    
+    
+def view_currencies():
+    url_symbols = 'https://api.exchangerate.host/symbols'
+    response = requests.get(url_symbols)
+    data = response.json()
+
+    symbols ={}
+    for key, value in data['symbols'].items():
+        symbols[value['code'].upper()] = value['description'].lower()
+        
+    for x in symbols.keys():
+      print(x + ' => ' + symbols[x])
+    
+    
+def convert_curr_program():
     symbols_data = symbols_json()
     symbols_dictionary = symbols_dic(symbols_data)    
     from_cur, to_cur, amt  = currency_lookup(symbols_dictionary)
@@ -91,8 +117,8 @@ def main():
 #     final_cal(rate_data, 80, 'EUR')
     
     
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
  
 
 
