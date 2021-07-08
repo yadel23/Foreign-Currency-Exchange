@@ -19,16 +19,20 @@ def symbols_dic(data):
 
 def currency_lookup(symbols):
 
-    while True:  
+    while True:
       isValid = True
       try:
         amount = eval(input("\nplease enter the amount you would like to exchange?\n"))
       except:
-        isValid = False   
+        isValid = False 
       if isValid:
+        if type(amount) == int or type(amount) == float:
           break
+        else:
+          print("Invalid input, please try again. \n")
+          continue
       else:
-        print('Invalid input please try again!\n')
+        print("Invalid input, please try again. \n")
         continue
         
     while True:
