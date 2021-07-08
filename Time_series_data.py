@@ -98,11 +98,32 @@ def gatherInput(symbols):
     else:
       print("Invalid input, please try again. \n")
       continue
-    
+  
+  base_url = 'https://api.exchangerate.host/'
+  date_parameter =  buildUrl(base_url, start_date, start_date)
+  after_date_fromat = str(d1).split(" ")
+  print(after_date_fromat[0], 'after fromat')
+  #print(date_parameter['rates'][after_date_fromat[0]])
+  dates_table = date_parameter['rates']['2000-01-01']
+  print(dates_table)
+  #dates_table = date_parameter['rates'][str(after_date_fromat[0])]
+  
+  
+
+
+
+  dates_dict = {}
+  for key, value in dates_table.items():
+       dates_dict[key] = value
+  #print(dates_dict.keys())
+  dates_list = [list(dates_dict.keys())]
+  #print(dates_list[0])
+   
   i = 1
   while i <= cur_number:
     currency = input(f'\n{i}. Enter a currency to compare: ') 
-    if type(currency) == str and currency.upper() in symbols.keys() and currency not in currency_list:
+    if type(currency) == str and currency.upper() in symbols.keys() and currency.upper() in dates_dict.keys() and currency not in currency_list:
+#       if currency.upper in dates_list[0]:         
       currency_list.append(currency)
       i += 1
       continue
