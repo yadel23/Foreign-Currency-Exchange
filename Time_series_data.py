@@ -83,19 +83,42 @@ def gatherInput(symbols):
       continue
   
   while True:
-    currency = input("Please enter the currency you would like to view data on: \n")
-    if type(currency) == str and currency.upper() in symbols.keys():
-      break
+    currency_list = []
+    isValid = True
+    try:
+      cur_number = eval(input("How many currency(ies) would you like to compare rates (from 1 to 5): \n"))
+    except:
+      isValid = False 
+    if isValid:
+      if type(cur_number) == int and cur_number >=1 and cur_number <= 5 or type(cur_number) == float:
+        break
+      else:
+        print("Invalid input, please try again. \n")
+        continue
     else:
       print("Invalid input, please try again. \n")
       continue
+    
+  i = 1
+  while i <= cur_number:
+    currency = input(f'\n{i}. Enter a currency to compare: ') 
+    if type(currency) == str and currency.upper() in symbols.keys() and currency not in currency_list:
+      currency_list.append(currency)
+      i += 1
+      continue
+    else:
+      print("Invalid input, please try again. \n")
+      continue
+    
+        
+  print(currency_list)
       
-  return start_date, end_date, currency
+  return start_date, end_date, currency_list
 
 #Database creation
-def createDatabase(database_name, filename):
+def createDatabase(database_name, filetable_name):
   os.system('mysql -u root -pcodio -e "CREATE DATABASE IF NOT EXISTS '+database_name+';"')
-  os.system("mysql -u root -pcodio "+database_name+" < " + filename)
+  os.system("mysql -u root -pcodio "+database_name+" < " + filetable_name)
   engine = create_engine('mysql://root:codio@localhost/'+database_name+'?charset=utf8', encoding='utf-8')
   return engine
 
@@ -107,24 +130,31 @@ def buildUrl(base_url, start_date, end_date):
   return data
 
 #Building panda dataframe
-def buildDataframe(data, currency):
-  col_names = ["Day", "Rate"]
+def buildDataframe(data, currency_list):
+  col_names = ["Currency", "Day", "Rate"]
   df = pd.DataFrame(columns = col_names)
   for key, value in data['rates'].items():
-      df.loc[len(df.index)] = [key, value[currency.upper()]]
+    df.loc[len(df.index)] = [currency_list[0], key, value[currency_list[0].upper()]]
+  i = 1
+  while i < len(currency_list):
+    df_2 = pd.DataFrame(columns = col_names)
+    for key, value in data['rates'].items():
+      df.loc[len(df.index)] = [currency_list[i], key, value[currency_list[i].upper()]]
+    df.append(df_2)
+    i += 1   
   return df
 
 #Line plot
-def linePlot(df, currency, start_date, end_date):
+def linePlot(df, currency_list, start_date, end_date):
   fig = go.Figure([go.Scatter(x=df['Day'], y=df['Rate'])])
-  fig.update_layout(title = f'Change in {currency} rates from {start_date} to {end_date}') 
+  fig.update_layout(title = f'Change in {currency_list} rates from {start_date} to {end_date}') 
   fig.write_html("line.html")
   
 
 #Saving data into database
-def savetoDatabase(df, engine, filename, table_name, database_name):
+def savetoDatabase(df, engine, filetable_name, table_name, database_name):
   df.to_sql(table_name, con=engine, if_exists='replace', index=False)
-  os.system('mysqldump -u root -pcodio '+database_name+' > '+ filename)
+  os.system('mysqldump -u root -pcodio '+database_name+' > '+ filetable_name)
 
 #The main function
 def time_series_program():
@@ -134,11 +164,11 @@ def time_series_program():
   base_url = 'https://api.exchangerate.host/'
   symbols_data = symbols_json()
   symbols = symbols_dic(symbols_data)
-  start_date, end_date, currency, = gatherInput(symbols)
+  start_date, end_date, currency_list, = gatherInput(symbols)
   engine = createDatabase(database_name, filetable_name)
   data = buildUrl(base_url, start_date, end_date)
-  df = buildDataframe(data, currency)
-  linePlot(df, currency, start_date, end_date)
+  df = buildDataframe(data, currency_list)
+  #linePlot(df, currency_list, start_date, end_date)
   savetoDatabase(df, engine, filetable_name, table_name, database_name)
   
   print('''\n
@@ -149,4 +179,4 @@ def time_series_program():
       %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       \n''')
   
-# main()
+time_series_program()
