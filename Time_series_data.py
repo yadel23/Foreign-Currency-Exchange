@@ -25,23 +25,52 @@ def symbols_dic(symbols_data):
 def gatherInput(symbols):
   
   while True:
-    start_date = input("Please enter the start date in the format, YYYY-MM-DD: \n")
-    s_date = start_date.split("-", 3)
-    if s_date[0].isnumeric() and s_date[1].isnumeric() and s_date[2].isnumeric():
-      d1 = datetime.datetime(int(s_date[0]), int(s_date[1]), int(s_date[2]))
-    if type(start_date) == str and len(start_date) == 10:
-      break
+    start_date = input("\nPlease enter the start date in the format, YYYY-MM-DD: \n")
+    isValidDate = True
+    isValidFormat = True
+    try:
+      datetime.datetime.strptime(start_date, '%Y-%m-%d')
+    except ValueError:
+        isValidFormat = False
+    if isValidFormat:
+      s_date = start_date.split("-", 3)
+      year = s_date[0]
+      month = s_date[1]
+      day = s_date[2]
+      if year.isnumeric() and month.isnumeric() and day.isnumeric():
+        try:
+          d1 = datetime.datetime(int(year), int(month), int(day))
+        except ValueError:
+          isValidDate = False
+        if isValidDate:
+          break
     else:
       print("Invalid input, please try again. \n")
       continue
-  
+      
   while True:
-    end_date = input("Please enter the end date in the format, YYYY-MM-DD: \n")
-    e_date = end_date.split("-", 3)
-    d2 = datetime.datetime(int(e_date[0]), int(e_date[1]), int(e_date[2]))
-  
-    if d2 > d1 and len(end_date) == 10:
-      break
+    end_date = input("\nPlease enter the end date in the format, YYYY-MM-DD: \n")
+    isValidDate1 = True
+    isValidFormat1 = True
+    try:
+      datetime.datetime.strptime(end_date, '%Y-%m-%d')
+    except ValueError:
+        isValidFormat1 = False
+    if isValidFormat1:
+      s_date1 = end_date.split("-", 3)
+      year1 = s_date1[0]
+      month1 = s_date1[1]
+      day1 = s_date1[2]
+      if year1.isnumeric() and month1.isnumeric() and day1.isnumeric():
+        try:
+          d2 = datetime.datetime(int(year1), int(month1), int(day1))
+        except ValueError:
+          isValidDate1 = False
+        if isValidDate1 and d2 > d1:
+            break
+        else:
+          print("Invalid input, please try again. \n")
+          continue
     else:
       print("Invalid input, please try again. \n")
       continue
@@ -93,7 +122,7 @@ def savetoDatabase(df, engine, filename, table_name, database_name):
 #The main function
 def main():
   database_name = "history"
-  filename = "time_series.sql"
+  filetable_name = "time_series.sql"
   table_name = 'currency_history'
   base_url = 'https://api.exchangerate.host/'
   symbols_data = symbols_json()
