@@ -131,15 +131,17 @@ def buildUrl(base_url, start_date, end_date):
 
 #Building panda dataframe
 def buildDataframe(data, currency_list):
-  i = 0
+  col_names = ["Currency", "Day", "Rate"]
+  df = pd.DataFrame(columns = col_names)
+  for key, value in data['rates'].items():
+    df.loc[len(df.index)] = [currency_list[0], key, value[currency_list[0].upper()]]
+  i = 1
   while i < len(currency_list):
-    col_names = ["Currency", "Day", "Rate"]
-    df = pd.DataFrame(columns = col_names)
+    df_2 = pd.DataFrame(columns = col_names)
     for key, value in data['rates'].items():
-      df.loc[len(df.index)] = [currency_list[i], key, value[currency_list[i].upper()]] 
-    df.append(df)
-    i += 1
-  print(df)   
+      df.loc[len(df.index)] = [currency_list[i], key, value[currency_list[i].upper()]]
+    df.append(df_2)
+    i += 1   
   return df
 
 #Line plot
