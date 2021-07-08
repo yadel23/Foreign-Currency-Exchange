@@ -18,14 +18,18 @@ def symbols_dic(data):
 
 
 def currency_lookup(symbols):
-  
-    while True:
-      amount = eval(input("\nplease enter the amount you would like to exchange?\n"))
-      if type(amount) != int and type(amount) != float:
+
+    while True:  
+      isValid = True
+      try:
+        amount = eval(input("\nplease enter the amount you would like to exchange?\n"))
+      except:
+        isValid = False   
+      if isValid:
+          break
+      else:
         print('Invalid input please try again!\n')
         continue
-      else:
-        break
         
     while True:
       from_currency = input('\nplease enter the currency you have?\n')
@@ -68,7 +72,7 @@ def final_cal(data_2, amount, to_currency):
         rate = value
         
     final_amount = float(rate) * float(amount)
-    print(f'Your final amount is  {final_amount}  {to_currency}\n')
+    print(f'\nYour final amount is  {final_amount}  {to_currency}\n')
 
     
 def main():
@@ -78,7 +82,7 @@ def main():
     rate_data = convertion_json(from_cur, to_cur)
     final_cal(rate_data, amt, to_cur)
     
-#     ## comment out later
+#     ## delete out later
 #     rate_data = convertion_json('USD', 'EUR')
 #     final_cal(rate_data, 80, 'EUR')
     
