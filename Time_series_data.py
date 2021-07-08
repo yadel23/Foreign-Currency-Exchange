@@ -24,6 +24,13 @@ def symbols_dic(symbols_data):
 #Gathering Input
 def gatherInput(symbols):
   
+  print('''\n
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  %        WELCOME TO THE CURRENCY TIME SERIES PROGRAM         %
+  %                                                            %
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \n''')
+  
   while True:
     start_date = input("\nPlease enter the start date in the format, YYYY-MM-DD: \n")
     isValidDate = True
@@ -120,7 +127,7 @@ def savetoDatabase(df, engine, filename, table_name, database_name):
   os.system('mysqldump -u root -pcodio '+database_name+' > '+ filename)
 
 #The main function
-def main():
+def time_series_program():
   database_name = "history"
   filetable_name = "time_series.sql"
   table_name = 'currency_history'
@@ -128,10 +135,18 @@ def main():
   symbols_data = symbols_json()
   symbols = symbols_dic(symbols_data)
   start_date, end_date, currency, = gatherInput(symbols)
-  engine = createDatabase(database_name, filename)
+  engine = createDatabase(database_name, filetable_name)
   data = buildUrl(base_url, start_date, end_date)
   df = buildDataframe(data, currency)
   linePlot(df, currency, start_date, end_date)
   savetoDatabase(df, engine, filetable_name, table_name, database_name)
   
-main()
+  print('''\n
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      %                                                                  %
+      %      THANK YOU FOR USING OUR CURRENCY TIME SERIES PROGRAM        %
+      %                                                                  %
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      \n''')
+  
+# main()
