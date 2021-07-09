@@ -3,6 +3,7 @@
 ## Project Description
 #### The purpose of our Foreign Currency Exchange program is to provide users info on foreign currencies and some cryptocurrencies. With this we want our users to be able to exchange their currencies and let time view up-to-date rates of currencies.  We can also provide users visualization of currency rates in the past so they can view and compare changes with up to five different currencies at a time.
 
+
 ## Requirements 
    * python 2.7 >
 

@@ -20,7 +20,7 @@ def symbols_dic(symbols_data):
     for key, value in symbols_data['symbols'].items():
           symbols[value['code'].upper()] = value['description'].lower()
     return symbols
-
+  
 #Gathering Input
 def gatherInput(symbols):
   
@@ -105,8 +105,7 @@ def gatherInput(symbols):
   base_url = 'https://api.exchangerate.host/'
   date_parameter =  buildUrl(base_url, start_date, start_date)
   after_date_fromat = str(d1).split(" ")
-  accept = after_date_fromat[0]
-  dates_table = date_parameter['rates'][accept]
+  dates_table = date_parameter['rates'][after_date_fromat[0]]
 
   dates_list = []
   for key, value in dates_table.items():
@@ -195,3 +194,30 @@ def time_series_program():
       \n''')
   
 #time_series_program()
+
+
+
+#Test functions for coverage
+def input_test_1(start_date):
+  if type(start_date) == str and len(start_date) == 10:
+    return True
+  else:
+    return False
+    
+def input_test_2(end_date):
+  if type(end_date) == str and len(end_date) == 10:
+    return True
+  else:
+    return False
+    
+def input_test_3(currency, symbols, dates_list, currency_list):
+  if type(currency) == str and currency.upper() in symbols.keys() and currency.upper() in dates_list and currency not in currency_list:  
+    return True
+  else: 
+    return False
+
+def input_test_4(cur_number):
+  if type(cur_number) == int and cur_number >=1 and cur_number <= 5 or type(cur_number) == float:
+    return True
+  else:
+    return False
