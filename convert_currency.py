@@ -27,11 +27,11 @@ def currency_lookup(symbols):
     while True:
       isValid = True
       try:
-        amount = eval(input("\nplease enter the amount you would like to exchange?\n"))
+        amount = eval(input("\nplease enter the amount you would like to convert?\n"))
       except:
         isValid = False 
       if isValid:
-        if type(amount) == int or type(amount) == float:
+        if type(amount) == int or type(amount) == float and amount > 0:
           break
         else:
           print("Invalid input, please try again. \n")

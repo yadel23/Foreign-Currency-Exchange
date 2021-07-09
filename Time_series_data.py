@@ -25,11 +25,11 @@ def symbols_dic(symbols_data):
 def gatherInput(symbols):
   
   print('''\n
-  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  %        WELCOME TO THE CURRENCY TIME SERIES PROGRAM         %
-  %                                                            %
-  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  \n''')
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %        WELCOME TO THE CURRENCY TIME SERIES PROGRAM         %
+    %                                                            %
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \n''')
   
   while True:
     start_date = input("\nPlease enter the start date in the format, YYYY-MM-DD: \n")
@@ -49,8 +49,11 @@ def gatherInput(symbols):
           d1 = datetime.datetime(int(year), int(month), int(day))
         except ValueError:
           isValidDate = False
-        if isValidDate:
+        if isValidDate and len(start_date) == 10:
           break
+        else:
+          print("Invalid input, please use the right date format. \n")
+          continue
     else:
       print("Invalid input, please try again. \n")
       continue
@@ -102,7 +105,8 @@ def gatherInput(symbols):
   base_url = 'https://api.exchangerate.host/'
   date_parameter =  buildUrl(base_url, start_date, start_date)
   after_date_fromat = str(d1).split(" ")
-  dates_table = date_parameter['rates'][after_date_fromat[0]]
+  accept = after_date_fromat[0]
+  dates_table = date_parameter['rates'][accept]
 
   dates_list = []
   for key, value in dates_table.items():

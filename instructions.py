@@ -24,7 +24,7 @@ def option_handler(option):
       return -1
 
 menu()
-option = option_handler(input('Enter your optoins: [1, 2, 3, 4]\n'))
+option = option_handler(input('Enter your options: [1, 2, 3, 4]\n'))
 
 while option != 4:
     if option == 1:
@@ -51,14 +51,15 @@ while option != 4:
           3) View history of currencies in a line graph
           4) Exit program
           \n''')
-    
+    else:
+      print('\n Invalid input, please try again:)\n')
     #menu()
-    option = option_handler(input('\nEnter your optoins: [1, 2, 3, 4]\n'))
+    option = option_handler(input('\nEnter your options: [1, 2, 3, 4]\n'))
 
 print('''
       %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       %                                                            %
-      %    Thank YOU FOR USING OUR PROGRAM, COME AGAIN LATER:)     %
+      %    THANK YOU FOR USING OUR PROGRAM, COME AGAIN LATER:)     %
       %                                                            %
       %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       ''')
