@@ -6,7 +6,7 @@
 ## Requirements 
    * python 2.7 >
 
-## Installations:
+## Installations
    * What to install:
          * pip install pandas
          * pip install mysql
@@ -15,10 +15,10 @@
          * pip install coverage
       
       
-## How to Run program:
+## How to Run program
     * python3 instructions.py
     
-## Contributors: 
+## Contributors
 * Isaac Ayayi Turkson
 * Yadel Negash
 
