@@ -29,10 +29,28 @@ option = option_handler(input('Enter your optoins: [1, 2, 3, 4]\n'))
 while option != 4:
     if option == 1:
       view_currencies()
+      print('''\n
+          1) View currencies and symbols available 
+          2) Convert your currency
+          3) View history of currencies in a line graph
+          4) Exit program
+          \n''')
     elif option == 2:
       convert_curr_program()
+      print('''\n
+          1) View currencies and symbols available 
+          2) Convert your currency
+          3) View history of currencies in a line graph
+          4) Exit program
+          \n''')
     elif option == 3:
-      time_series_program()      
+      time_series_program()
+      print('''\n
+          1) View currencies and symbols available 
+          2) Convert your currency
+          3) View history of currencies in a line graph
+          4) Exit program
+          \n''')
     
     #menu()
     option = option_handler(input('\nEnter your optoins: [1, 2, 3, 4]\n'))
