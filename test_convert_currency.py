@@ -1,10 +1,9 @@
 import unittest
-from convert_currency import symbols_json, symbols_dic, currency_lookup, convertion_json, final_cal
+from convert_currency import symbols_json, symbols_dic, test_input1, test_input2, test_input3, convertion_json, final_cal
 
 data = symbols_json()
 symb_dict = symbols_dic(data)
-from_cur, to_cur, amt = currency_lookup(symb_dict)
-data_2 = convertion_json(from_cur, to_cur)
+data_2 = convertion_json('USD', 'BTC')
     
 class TestFileName(unittest.TestCase):
  
@@ -19,36 +18,62 @@ class TestFileName(unittest.TestCase):
       
         self.assertEqual(type(symb_dict), dict)
         self.assertIsNotNone(symb_dict)
-     
-    #testing from currency, to currency, and amount
+         
     def test_function3(self):
-      
-        is_num = False
-        if type(amt) == int or float:
-          is_num = True
-          
-        self.assertEqual(type(from_cur), str)
-        self.assertEqual(type(to_cur), str)
-        self.assertNotEqual(type(amt), str)
-        
-        self.assertTrue(is_num)
-        
-        self.assertIsNotNone(from_cur)
-        self.assertIsNotNone(to_cur)
-        self.assertIsNotNone(amt)
-        
-        self.assertEqual(len(from_cur), 3)
-        self.assertEqual(len(to_cur), 3)
-     
-    #testing if it returns a dictionary
+         
+        for_int_val = test_input1(123)
+        for_float_val = test_input1(12.34)
+        for_str_val = test_input1('str')
+        for_list_val = test_input1([1, '2', True])
+         
+        self.assertEqual(for_int_val, True)
+        self.assertEqual(for_float_val, True)
+        self.assertEqual(for_str_val, False)
+        self.assertEqual(for_list_val, False)
+         
     def test_function4(self):
-        
+
+        for_int_val = test_input2(123, symb_dict)
+        for_float_val = test_input2(12.34, symb_dict)
+        for_str_val = test_input2('str', symb_dict)
+        for_list_val = test_input2([1, '2', True], symb_dict)
+        for_correct_val = test_input2('USD', symb_dict)
+        for_incor_val = test_input2('NTT', symb_dict)
+
+        self.assertEqual(for_int_val, False)
+        self.assertEqual(for_float_val, False)
+        self.assertEqual(for_str_val, False)
+        self.assertEqual(for_list_val, False)
+        self.assertEqual(for_correct_val, True)
+        self.assertEqual(for_incor_val, False)
+      
+      
+    def test_function5(self):
+
+        for_int_val = test_input3(123, 123, symb_dict)
+        for_float_val = test_input3(12.34, 23.3, symb_dict)
+        for_str_val = test_input3('str', 12, symb_dict)
+        for_list_val = test_input3([1, '2', True], 121, symb_dict)
+        for_correct_val = test_input3('BTC', 'USD', symb_dict)
+        for_incor_val = test_input3('NTT', 'USE', symb_dict)
+
+        self.assertEqual(for_int_val, False)
+        self.assertEqual(for_float_val, False)
+        self.assertEqual(for_str_val, False)
+        self.assertEqual(for_list_val, False)
+        self.assertEqual(for_correct_val, True)
+        self.assertEqual(for_incor_val, False)
+      
+   
+    # testing if it returns a dictionary
+    def test_function4(self):
+        data_2 = convertion_json('USD', 'BTC')
         self.assertEqual(type(data_2), dict)
         self.assertIsNotNone(data_2)
         
-#     def test_function5(self):
-#         final_amont = final_cal(data_2, amt, to_cur)
-#         self.assertIsNone(final_amont)
+    def test_function5(self):
+        final_amont = final_cal(data_2, 12.34, "BTC")
+        self.assertIsNone(final_amont)
         
         
         

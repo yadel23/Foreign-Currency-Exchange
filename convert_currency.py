@@ -14,6 +14,27 @@ def symbols_dic(data):
           
     return symbols
 
+
+def test_input1(amountt):
+      if type(amountt) == int or type(amountt) == float and amountt > 0:
+         return True
+      else:
+         return False
+      
+def test_input2(from_currencyy, symbols):
+      if from_currencyy.upper() in symbols.keys():
+         return True
+      else:
+         return False
+      
+def test_input3(from_currencyy, to_currencyy, symbols):
+      if to_currencyy.upper() in symbols.keys():
+         if not from_currencyy == to_currencyy:
+            return True
+      else:
+         return False         
+
+
 def currency_lookup(symbols):
     
     print('''\n
@@ -119,6 +140,8 @@ def convert_curr_program():
     
 # if __name__ == "__main__":
 #     main()
+
+# convert_curr_program()
  
 
 
