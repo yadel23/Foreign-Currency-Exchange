@@ -15,17 +15,21 @@ jobs:
       - name: Install tools
         run: |
           python -m pip install --upgrade pip pytest
-          pip install coverage                            #this is new
+          pip install coverage                            
           pip install pandas
           pip install sqlalchemy
           pip install requests
+          pip install plotly
       - name: Test with unittest
         run: |
           python3 -m unittest test_convert_currency.py
+          python3 -m coverage run -m unittest test_time_series_data.py
+
           
-      - name: Check code coverage                        #new from here down
+      - name: Check code coverage                        
         run: |
           python3 -m coverage run -m unittest test_convert_currency.py
+          python3 -m coverage run -m unittest test_time_series_data.py
           python3 -m coverage report
           python3 -m coverage html
           
