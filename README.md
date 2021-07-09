@@ -16,7 +16,7 @@
       
       
 ## How to Run program
-    * python3 instructions.py
+    python3 instructions.py
     
 ## Contributors
 * Isaac Ayayi Turkson
