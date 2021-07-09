@@ -98,11 +98,20 @@ def gatherInput(symbols):
     else:
       print("Invalid input, please try again. \n")
       continue
-    
+  
+  base_url = 'https://api.exchangerate.host/'
+  date_parameter =  buildUrl(base_url, start_date, start_date)
+  after_date_fromat = str(d1).split(" ")
+  dates_table = date_parameter['rates'][after_date_fromat[0]]
+
+  dates_list = []
+  for key, value in dates_table.items():
+       dates_list.append(key) 
+   
   i = 1
   while i <= cur_number:
     currency = input(f'\n{i}. Enter a currency to compare: ') 
-    if type(currency) == str and currency.upper() in symbols.keys() and currency not in currency_list:
+    if type(currency) == str and currency.upper() in symbols.keys() and currency.upper() in dates_list and currency not in currency_list:         
       currency_list.append(currency.upper())
       i += 1
       continue
@@ -137,7 +146,6 @@ def buildDataframe(data, currency_list):
       df_i.loc[len(df_i.index)] = [currency_list[i], key, value[currency_list[i].upper()]]
     df.append(df_i)
     i+=1
-  print(type(df))
   return df
 
 #Line plot
@@ -156,7 +164,7 @@ def linePlot(df, currency_list, start_date, end_date):
 #Saving data into database
 def savetoDatabase(df, engine, filetable_name, table_name, database_name):
   for df_name in df:
-    df_name.to_sql(table_name, con=engine, if_exists='replace', index=False)
+    df_name.to_sql(table_name, con=engine, if_exists='append', index=False)
   os.system('mysqldump -u root -pcodio '+database_name+' > '+ filetable_name)
 
 #The main function
