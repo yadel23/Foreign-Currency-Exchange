@@ -1,11 +1,10 @@
 import unittest
-from Time_series_data import buildUrl, buildDataframe, gatherInput
+from Time_series_data import gatherInput, symbols_json, symbols_dic
 
 data = symbols_json()
 symb_dict = symbols_dic(data)
-from_cur, to_cur, amt = currency_lookup(symb_dict)
-data_2 = convertion_json(from_cur, to_cur)
-    
+start_date, end_date, currency_list  = gatherInput(symb_dict)
+
 class TestFileName(unittest.TestCase):
  
     #testing if it returns a dictionary
@@ -27,30 +26,16 @@ class TestFileName(unittest.TestCase):
         if type(amt) == int or float:
           is_num = True
           
-        self.assertEqual(type(from_cur), str)
-        self.assertEqual(type(to_cur), str)
-        self.assertNotEqual(type(amt), str)
+        self.assertEqual(type(start_date), str)
+        self.assertEqual(type(end_date), str)
+        self.assertNotEqual(type(currency_list), list)
         
         self.assertTrue(is_num)
         
-        self.assertIsNotNone(from_cur)
-        self.assertIsNotNone(to_cur)
-        self.assertIsNotNone(amt)
-        
-        self.assertEqual(len(from_cur), 3)
-        self.assertEqual(len(to_cur), 3)
+        self.assertIsNotNone(start_date)
+        self.assertIsNotNone(end_date)
+        self.assertIsNotNone(currency_list)
+    
      
-    #testing if it returns a dictionary
-    def test_function4(self):
-        
-        self.assertEqual(type(data_2), dict)
-        self.assertIsNotNone(data_2)
-        
-#     def test_function5(self):
-#         final_amont = final_cal(data_2, amt, to_cur)
-#         self.assertIsNone(final_amont)
-        
-        
-        
       
         

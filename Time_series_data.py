@@ -102,37 +102,22 @@ def gatherInput(symbols):
   base_url = 'https://api.exchangerate.host/'
   date_parameter =  buildUrl(base_url, start_date, start_date)
   after_date_fromat = str(d1).split(" ")
-  print(after_date_fromat[0], 'after fromat')
-  #print(date_parameter['rates'][after_date_fromat[0]])
-  dates_table = date_parameter['rates']['2000-01-01']
-  print(dates_table)
-  #dates_table = date_parameter['rates'][str(after_date_fromat[0])]
-  
-  
+  dates_table = date_parameter['rates'][after_date_fromat[0]]
 
-
-
-  dates_dict = {}
+  dates_list = []
   for key, value in dates_table.items():
-       dates_dict[key] = value
-  #print(dates_dict.keys())
-  dates_list = [list(dates_dict.keys())]
-  #print(dates_list[0])
+       dates_list.append(key) 
    
   i = 1
   while i <= cur_number:
     currency = input(f'\n{i}. Enter a currency to compare: ') 
-    if type(currency) == str and currency.upper() in symbols.keys() and currency.upper() in dates_dict.keys() and currency not in currency_list:
-#       if currency.upper in dates_list[0]:         
-      currency_list.append(currency)
+    if type(currency) == str and currency.upper() in symbols.keys() and currency.upper() in dates_list and currency not in currency_list:         
+      currency_list.append(currency.upper())
       i += 1
       continue
     else:
       print("Invalid input, please try again. \n")
       continue
-    
-        
-  print(currency_list)
       
   return start_date, end_date, currency_list
 
@@ -152,29 +137,34 @@ def buildUrl(base_url, start_date, end_date):
 
 #Building panda dataframe
 def buildDataframe(data, currency_list):
-  col_names = ["Currency", "Day", "Rate"]
-  df = pd.DataFrame(columns = col_names)
-  for key, value in data['rates'].items():
-    df.loc[len(df.index)] = [currency_list[0], key, value[currency_list[0].upper()]]
-  i = 1
+  df = []
+  i = 0
   while i < len(currency_list):
-    df_2 = pd.DataFrame(columns = col_names)
+    col_names = ["Currency", "Day", "Rate"]
+    df_i = pd.DataFrame(columns = col_names)
     for key, value in data['rates'].items():
-      df.loc[len(df.index)] = [currency_list[i], key, value[currency_list[i].upper()]]
-    df.append(df_2)
-    i += 1   
+      df_i.loc[len(df_i.index)] = [currency_list[i], key, value[currency_list[i].upper()]]
+    df.append(df_i)
+    i+=1
   return df
 
 #Line plot
 def linePlot(df, currency_list, start_date, end_date):
-  fig = go.Figure([go.Scatter(x=df['Day'], y=df['Rate'])])
+  i = 0
+  fig = go.Figure()
+  while i < len(currency_list):
+    fig.add_trace(go.Scatter(x=df[i]['Day'], y=df[i]['Rate'],
+                    mode='lines',
+                    name=currency_list[i]))
+    i += 1
   fig.update_layout(title = f'Change in {currency_list} rates from {start_date} to {end_date}') 
   fig.write_html("line.html")
   
 
 #Saving data into database
 def savetoDatabase(df, engine, filetable_name, table_name, database_name):
-  df.to_sql(table_name, con=engine, if_exists='replace', index=False)
+  for df_name in df:
+    df_name.to_sql(table_name, con=engine, if_exists='append', index=False)
   os.system('mysqldump -u root -pcodio '+database_name+' > '+ filetable_name)
 
 #The main function
@@ -185,11 +175,11 @@ def time_series_program():
   base_url = 'https://api.exchangerate.host/'
   symbols_data = symbols_json()
   symbols = symbols_dic(symbols_data)
-  start_date, end_date, currency_list, = gatherInput(symbols)
+  start_date, end_date, currency_list = gatherInput(symbols)
   engine = createDatabase(database_name, filetable_name)
   data = buildUrl(base_url, start_date, end_date)
   df = buildDataframe(data, currency_list)
-  #linePlot(df, currency_list, start_date, end_date)
+  linePlot(df, currency_list, start_date, end_date)
   savetoDatabase(df, engine, filetable_name, table_name, database_name)
   
   print('''\n
@@ -200,4 +190,4 @@ def time_series_program():
       %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       \n''')
   
-time_series_program()
+#time_series_program()
