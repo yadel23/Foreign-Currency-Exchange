@@ -1,9 +1,9 @@
 import unittest
-from Time_series_data import gatherInput, symbols_json, symbols_dic
+from Time_series_data import gatherInput, symbols_json, symbols_dic, input_test_1, input_test_2, input_test_3, input_test_4
 
 data = symbols_json()
 symb_dict = symbols_dic(data)
-start_date, end_date, currency_list  = gatherInput(symb_dict)
+#start_date, end_date, currency_list  = gatherInput(symb_dict)
 
 class TestFileName(unittest.TestCase):
  
@@ -21,21 +21,22 @@ class TestFileName(unittest.TestCase):
      
     #testing from currency, to currency, and amount
     def test_function3(self):
+      date = input_test_1(2000)
+      self.assertEqual(date, False)
+      self.assertIsNotNone(date)
       
-        is_num = False
-        if type(amt) == int or float:
-          is_num = True
-          
-        self.assertEqual(type(start_date), str)
-        self.assertEqual(type(end_date), str)
-        self.assertNotEqual(type(currency_list), list)
-        
-        self.assertTrue(is_num)
-        
-        self.assertIsNotNone(start_date)
-        self.assertIsNotNone(end_date)
-        self.assertIsNotNone(currency_list)
-    
+      e_date = input_test_1("2000-05-22")
+      self.assertEqual(e_date, True)
+      self.assertIsNotNone(e_date)
+      
+      cur = input_test_3("cad", {"USD":0.5, "AED":0.6}, ["2000-04-22", "2000-05-22"], ["CAD", "AUD"])
+      self.assertEqual(cur, False)
+      self.assertIsNotNone(cur)
+      
+      cur_number = input_test_4(4)
+      self.assertEqual(cur_number, True)
+      self.assertIsNotNone(cur_number)
+      
      
       
         
